@@ -1,21 +1,16 @@
-# The following five lines of boilerplate have to be in your project's
-# CMakeLists in this exact order for cmake to work correctly
 cmake_minimum_required(VERSION 3.16)
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
-# Enable the SDL_ESP_IDF option
-set(SDL_ESP_IDF ON CACHE BOOL "Build SDL specifically for the ESP-IDF environment")
-
-# Ensure out-of-source build for SDL
-set(EXTERNAL_SDL_DIR ${CMAKE_SOURCE_DIR}/components/SDL)
-set(BUILD_SDL_DIR ${CMAKE_BINARY_DIR}/sdl_build)
-file(MAKE_DIRECTORY ${BUILD_SDL_DIR})
-add_subdirectory(${EXTERNAL_SDL_DIR} ${BUILD_SDL_DIR})
-
 project(sdl-test)
-set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
-# find_package(Threads REQUIRED)
 
-list(APPEND EXTRA_COMPONENT_DIRS "components/SDL")
+# Include the path to the prebuilt SDL3 library
+#set(SDL3_LIB_PATH ${CMAKE_SOURCE_DIR}/lib/libSDL3.a)
+
+# Add an alias for the library to make linking easier
+#add_library(SDL3 STATIC IMPORTED)
+#set_target_properties(SDL3 PROPERTIES IMPORTED_LOCATION ${SDL3_LIB_PATH})
+
+# Link the SDL3 library to the project
+#target_link_libraries(${COMPONENT_TARGET} PRIVATE SDL3)
 
