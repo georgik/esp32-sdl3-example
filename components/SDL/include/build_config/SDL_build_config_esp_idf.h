@@ -32,6 +32,7 @@
 #define SDL_CAMERA_DISABLED 1
 #define SDL_AUDIO_DISABLED 1
 #define SDL_VIDEO_DISABLED 1
+#define HAVE_MALLOC 1
 /**
  *  \file SDL_build_config_minimal.h
  *
