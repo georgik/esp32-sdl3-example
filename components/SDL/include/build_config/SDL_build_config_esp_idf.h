@@ -89,7 +89,7 @@ typedef unsigned int uintptr_t;
 #define SDL_LOADSO_DUMMY 1
 
 /* Enable the stub thread support (src/thread/generic/\*.c) */
-#define SDL_THREADS_DISABLED    1
+//#define SDL_THREADS_DISABLED    1
 
 /* Enable the dummy video driver (src/video/dummy/\*.c) */
 #define SDL_VIDEO_DRIVER_DUMMY  1

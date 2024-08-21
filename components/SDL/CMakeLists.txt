@@ -13,6 +13,7 @@ idf_component_register(SRCS
                         "SDL/src/timer/SDL_timer.c"
                         "SDL/src/timer/esp-idf/SDL_systimer.c"
                         "SDL/src/thread/SDL_thread.c"
+                        "SDL/src/thread/esp-idf/SDL_syscond.c"
                         "SDL/src/thread/esp-idf/SDL_sysmutex.c"
                         "SDL/src/thread/esp-idf/SDL_syssem.c"
                         "SDL/src/thread/esp-idf/SDL_systhread.c"
