@@ -1,3 +1,4 @@
+
 idf_component_register(SRCS
                         "SDL/src/SDL.c"
                         "SDL/src/atomic/SDL_atomic.c"
@@ -34,8 +35,18 @@ idf_component_register(SRCS
                         "SDL/src/SDL_hashtable.c"
                         "SDL/src/SDL_hints.c"
                         "SDL/src/SDL_log.c"
+
                         "SDL/src/render/SDL_render.c"
+                        "SDL/src/render/software/SDL_blendfillrect.c"
+                        "SDL/src/render/software/SDL_blendline.c"
+                        "SDL/src/render/software/SDL_blendpoint.c"
+                        "SDL/src/render/software/SDL_drawline.c"
+                        "SDL/src/render/software/SDL_drawpoint.c"
+                        "SDL/src/render/software/SDL_rotate.c"
+                        "SDL/src/render/software/SDL_render_sw.c"
+                        "SDL/src/render/software/SDL_triangle.c"
                         "SDL/src/render/SDL_yuv_sw.c"
+
                         "SDL/src/video/SDL_RLEaccel.c"
                         "SDL/src/video/SDL_blit.c"
                         "SDL/src/video/SDL_blit_0.c"
@@ -49,13 +60,22 @@ idf_component_register(SRCS
                         "SDL/src/video/SDL_fillrect.c"
                         "SDL/src/video/SDL_pixels.c"
                         "SDL/src/video/SDL_rect.c"
+                        "SDL/src/video/SDL_stretch.c"
                         "SDL/src/video/SDL_surface.c"
                         "SDL/src/video/SDL_video.c"
                         "SDL/src/video/SDL_yuv.c"
                         "SDL/src/video/yuv2rgb/yuv_rgb_std.c"
-                        "SDL/src/video/dummy/SDL_nullevents.c"
-                        "SDL/src/video/dummy/SDL_nullframebuffer.c"
-                        "SDL/src/video/dummy/SDL_nullvideo.c"
+
+                        # Video: Dummy driver
+                        #"SDL/src/video/dummy/SDL_nullevents.c"
+                        #"SDL/src/video/dummy/SDL_nullframebuffer.c"
+                        #"SDL/src/video/dummy/SDL_nullvideo.c"
+
+                        # Video: ESP-IDF BSP based driver
+                        "SDL/src/video/esp-idf/SDL_espidfevents.c"
+                        "SDL/src/video/esp-idf/SDL_espidfframebuffer.c"
+                        "SDL/src/video/esp-idf/SDL_espidfvideo.c"
+
                         "SDL/src/SDL_properties.c"
                         "SDL/src/SDL_utils.c"
                     INCLUDE_DIRS "include"

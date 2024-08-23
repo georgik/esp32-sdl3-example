@@ -39,6 +39,11 @@
 #define HAVE_MALLOC 1
 #define HAVE_FABS 1
 #define HAVE_POW 1
+#define SDL_VIDEO_DRIVER_ESP_IDF 1
+#define HAVE_SIN 1
+#define HAVE_COS 1
+#define SDL_VIDEO_RENDER_SW 1
+
 /**
  *  \file SDL_build_config_minimal.h
  *
@@ -98,7 +103,7 @@ typedef unsigned int uintptr_t;
 //#define SDL_THREADS_DISABLED    1
 
 /* Enable the dummy video driver (src/video/dummy/\*.c) */
-#define SDL_VIDEO_DRIVER_DUMMY  1
+//#define SDL_VIDEO_DRIVER_DUMMY  1
 
 /* Enable the dummy filesystem driver (src/filesystem/dummy/\*.c) */
 #define SDL_FILESYSTEM_DUMMY  1
