@@ -10,36 +10,6 @@ Uint64 TimerCallback(void *param, Uint64 interval)
     return interval; // Return the interval to keep the timer running
 }
 
-void DrawCircle(SDL_Renderer *renderer, int x0, int y0, int radius)
-{
-    int x = radius;
-    int y = 0;
-    int err = 0;
-
-    while (x >= y)
-    {
-        SDL_RenderPoint(renderer, x0 + x, y0 + y);
-        SDL_RenderPoint(renderer, x0 + y, y0 + x);
-        SDL_RenderPoint(renderer, x0 - y, y0 + x);
-        SDL_RenderPoint(renderer, x0 - x, y0 + y);
-        SDL_RenderPoint(renderer, x0 - x, y0 - y);
-        SDL_RenderPoint(renderer, x0 - y, y0 - x);
-        SDL_RenderPoint(renderer, x0 + y, y0 - x);
-        SDL_RenderPoint(renderer, x0 + x, y0 - y);
-
-        if (err <= 0)
-        {
-            y += 1;
-            err += 2*y + 1;
-        }
-        if (err > 0)
-        {
-            x -= 1;
-            err -= 2*x + 1;
-        }
-    }
-}
-
 void app_main(void)
 {
     printf("SDL3 on ESP32\n");
@@ -49,49 +19,18 @@ void app_main(void)
     } else {
         printf("SDL initialized successfully\n");
 
-        // Create a window - TODO: limited to 120
-        // Larger screen has some problem with initialization,
-        // probably due to stack size
         SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 120, 0);
         if (!window) {
             printf("Failed to create window: %s\n", SDL_GetError());
             return;
         }
 
-        size_t free_heap_after_window = heap_caps_get_free_size(MALLOC_CAP_DEFAULT);
-        printf("Free heap after SDL_CreateWindow: %zu bytes\n", free_heap_after_window);
-
-        // Create a renderer
         SDL_Renderer *renderer = SDL_CreateRenderer(window, NULL);
         if (!renderer) {
             printf("Failed to create renderer: %s\n", SDL_GetError());
             SDL_DestroyWindow(window);
             return;
         }
-
-        // Set the draw color to blue
-        SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
-        SDL_RenderClear(renderer);
-
-        // Draw a rectangle
-        SDL_SetRenderDrawColor(renderer, 0, 66, 0, 255);
-        SDL_FRect rect = {10.0f, 20.0f, 50.0f, 30.0f};
-        SDL_RenderFillRect(renderer, &rect);
-
-        // Draw a point
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_RenderPoint(renderer, 80, 50);
-
-        // Draw a line
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderLine(renderer, 10, 50, 20, 60);
-
-        // Draw a circle
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        DrawCircle(renderer, 50, 50, 20);
-
-        // Present the rendered content to the screen
-        SDL_RenderPresent(renderer);
 
         // Create a repeating timer with a 1-second interval
         SDL_TimerID timer_id = SDL_AddTimer(1000, TimerCallback, NULL);
@@ -101,9 +40,39 @@ void app_main(void)
             printf("Timer created successfully\n");
         }
 
-        // Main loop
+        // Initial position of the rectangle
+        float rect_x = 10.0f;
+        float rect_y = 20.0f;
+        float rect_w = 50.0f;
+        float rect_h = 30.0f;
+
+        // Speed of movement
+        float speed = 2.0f;
+        int direction = 1; // 1 for right, -1 for left
+
         while (1) {
-            vTaskDelay(pdMS_TO_TICKS(1000)); // Delay 1 second to keep the watchdog happy
+            // Move the rectangle
+            rect_x += speed * direction;
+
+            // Reverse direction if the rectangle hits the window boundaries
+            if (rect_x <= 0 || rect_x + rect_w >= 320) {
+                direction *= -1;
+            }
+
+            // Clear the screen
+            SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
+            SDL_RenderClear(renderer);
+
+            // Draw the moving rectangle
+            SDL_SetRenderDrawColor(renderer, 0, 66, 0, 255);
+            SDL_FRect rect = {rect_x, rect_y, rect_w, rect_h};
+            SDL_RenderFillRect(renderer, &rect);
+
+            // Present the rendered content to the screen
+            SDL_RenderPresent(renderer);
+
+            // Delay to control the frame rate
+            vTaskDelay(pdMS_TO_TICKS(16)); // Approximately 60 frames per second
         }
 
         // Cleanup
