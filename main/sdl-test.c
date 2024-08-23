@@ -4,10 +4,40 @@
 #include "freertos/task.h"
 
 // Timer callback function
-Uint32 TimerCallback(Uint32 interval, void *param)
+Uint64 TimerCallback(void *param, Uint64 interval)
 {
     printf("Timer callback executed!\n");
     return interval; // Return the interval to keep the timer running
+}
+
+void DrawCircle(SDL_Renderer *renderer, int x0, int y0, int radius)
+{
+    int x = radius;
+    int y = 0;
+    int err = 0;
+
+    while (x >= y)
+    {
+        SDL_RenderPoint(renderer, x0 + x, y0 + y);
+        SDL_RenderPoint(renderer, x0 + y, y0 + x);
+        SDL_RenderPoint(renderer, x0 - y, y0 + x);
+        SDL_RenderPoint(renderer, x0 - x, y0 + y);
+        SDL_RenderPoint(renderer, x0 - x, y0 - y);
+        SDL_RenderPoint(renderer, x0 - y, y0 - x);
+        SDL_RenderPoint(renderer, x0 + y, y0 - x);
+        SDL_RenderPoint(renderer, x0 + x, y0 - y);
+
+        if (err <= 0)
+        {
+            y += 1;
+            err += 2*y + 1;
+        }
+        if (err > 0)
+        {
+            x -= 1;
+            err -= 2*x + 1;
+        }
+    }
 }
 
 void app_main(void)
@@ -36,33 +66,30 @@ void app_main(void)
 
         // Set the draw color to blue
         SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
-
-        // Clear the screen with the draw color
         SDL_RenderClear(renderer);
 
-        // Set the draw color to green for the rectangle
+        // Draw a rectangle
         SDL_SetRenderDrawColor(renderer, 0, 66, 0, 255);
-
-        // Create and draw a rectangle
-        SDL_Rect rect = {10, 20, 8, 6}; // x, y, width, height
+        SDL_FRect rect = {10.0f, 20.0f, 50.0f, 30.0f};
         SDL_RenderFillRect(renderer, &rect);
 
+        // Draw a point
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_RenderPoint(renderer, 80, 50);
+
+        // Draw a line
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_RenderLine(renderer, 10, 100, 100, 150);
+
+        // Draw a circle
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        DrawCircle(renderer, 200, 100, 50);
+
         // Present the rendered content to the screen
         SDL_RenderPresent(renderer);
 
-        // Set the draw color to green for the rectangle
-        SDL_SetRenderDrawColor(renderer, 77, 12, 0, 255);
-
-        // Create and draw a rectangle
-        SDL_Rect rect2 = {4, 40, 10, 10}; // x, y, width, height
-        SDL_RenderFillRect(renderer, &rect2);
-
-        // Present the rendered content to the screen
-        SDL_RenderPresent(renderer);
-
-
-        // Create a repeating timer with a 1-second interval (1000 milliseconds)
-        SDL_TimerID timer_id = SDL_AddTimer(200, TimerCallback, NULL);
+        // Create a repeating timer with a 1-second interval
+        SDL_TimerID timer_id = SDL_AddTimer(1000, TimerCallback, NULL);
         if (timer_id == 0) {
             printf("Failed to create timer: %s\n", SDL_GetError());
         } else {
