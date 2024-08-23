@@ -79,11 +79,11 @@ void app_main(void)
 
         // Draw a line
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_RenderLine(renderer, 10, 100, 100, 150);
+        SDL_RenderLine(renderer, 10, 50, 20, 60);
 
         // Draw a circle
         SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        DrawCircle(renderer, 200, 100, 50);
+        DrawCircle(renderer, 50, 50, 20);
 
         // Present the rendered content to the screen
         SDL_RenderPresent(renderer);
