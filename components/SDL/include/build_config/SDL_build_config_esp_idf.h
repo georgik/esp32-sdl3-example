@@ -26,13 +26,19 @@
 #include <SDL3/SDL_platform_defines.h>
 
 #define HAVE_MMAP 0
+
 #define HAVE_FLOOR 1
 #define HAVE_MODF 1
 #define SDL_TIMER_ESP_IDF 1
 #define SDL_CAMERA_DISABLED 1
 #define SDL_AUDIO_DISABLED 1
-#define SDL_VIDEO_DISABLED 1
+
+// #define SDL_VIDEO_DISABLED 1
+// Defines required for Video
+#define HAVE_SQRT 1
 #define HAVE_MALLOC 1
+#define HAVE_FABS 1
+#define HAVE_POW 1
 /**
  *  \file SDL_build_config_minimal.h
  *
