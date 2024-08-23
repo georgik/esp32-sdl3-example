@@ -49,12 +49,17 @@ void app_main(void)
     } else {
         printf("SDL initialized successfully\n");
 
-        // Create a window
-        SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 100, 100, 0);
+        // Create a window - TODO: limited to 120
+        // Larger screen has some problem with initialization,
+        // probably due to stack size
+        SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 120, 0);
         if (!window) {
             printf("Failed to create window: %s\n", SDL_GetError());
             return;
         }
+
+        size_t free_heap_after_window = heap_caps_get_free_size(MALLOC_CAP_DEFAULT);
+        printf("Free heap after SDL_CreateWindow: %zu bytes\n", free_heap_after_window);
 
         // Create a renderer
         SDL_Renderer *renderer = SDL_CreateRenderer(window, NULL);
