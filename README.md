@@ -22,6 +22,10 @@ cd components/SDL
 git clone --branch feature/esp-idf git@github.com:georgik/SDL.git
 cd ../..
 
+cd components/SDL_ttf
+git@github.com:libsdl-org/SDL_ttf.git --depth 10
+cd ../..
+
 cd components/SDL_image
 git@github.com:libsdl-org/SDL_image.git --depth 10
 cd ../..
@@ -29,3 +33,8 @@ cd ../..
 idf.py set-target esp32-s3
 idf.py build
 ```
+
+
+## Credits
+
+- FreeSans.ttf - https://github.com/opensourcedesign/fonts/blob/master/gnu-freefont_freesans/FreeSans.ttf

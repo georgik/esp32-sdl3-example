@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
+#include "SDL3_ttf/SDL_ttf.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -142,6 +143,17 @@ void app_main(void)
 
     SDL_Texture *imageTexture = LoadBackgroundImage(renderer, "/assets/espressif.bmp");
 
+    if (TTF_Init() == -1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        return;
+    }
+
+    TTF_Font *font = TTF_OpenFont("/assets/FreeSans.ttf", 24);
+    if (!font) {
+        printf("Failed to load font: %s\n", TTF_GetError());
+        return;
+    }
+
     // Create a repeating timer with a 1-second interval
     SDL_TimerID timer_id = SDL_AddTimer(1000, TimerCallback, NULL);
     if (timer_id == 0) {
@@ -175,7 +187,17 @@ void app_main(void)
             direction *= -1;
         }
 
+        // Clear the screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
         // Copy background image to whole background
+        SDL_Rect destRect;
+        destRect.x = 2.0f;  // X position on the screen
+        destRect.y = 2.0f;  // Y position on the screen
+        destRect.w = 20.0f;  // Width of the image
+        destRect.h = 20.0f;  // Height of the image
+
         SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
 
         // Draw the moving rectangle
