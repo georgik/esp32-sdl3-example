@@ -44,6 +44,9 @@
 #define HAVE_COS 1
 #define SDL_VIDEO_RENDER_SW 1
 
+// File system
+#define HAVE_STDIO_H 1
+
 /**
  *  \file SDL_build_config_minimal.h
  *
