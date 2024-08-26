@@ -178,6 +178,28 @@ void app_main(void)
     SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
     SDL_RenderClear(renderer);
 
+    SDL_Color color = {255, 255, 255, 255};  // White color
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, "Hello ESP32", color);
+    if (!textSurface) {
+        printf("Failed to render text: %s\n", TTF_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
+
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_DestroySurface(textSurface);
+    if (!textTexture) {
+        printf("Failed to create texture from surface: %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
+
+    SDL_RenderTexture(renderer, textTexture, NULL, NULL);
+
+    SDL_RenderPresent(renderer);
+
+    vTaskDelay(pdMS_TO_TICKS(1000)); // Approximately 60 frames per second
+
     while (1) {
         // Move the rectangle
         rect_x += speed * direction;
