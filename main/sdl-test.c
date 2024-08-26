@@ -146,7 +146,7 @@ void app_main(void)
     float rect_x = 10.0f;
     float rect_y = 20.0f;
     float rect_w = 50.0f;
-    float rect_h = 30.0f;
+    float rect_h = 10.0f;
 
     // Speed of movement
     float speed = 2.0f;
@@ -171,9 +171,17 @@ void app_main(void)
         SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
 
         // Draw the moving rectangle
-        SDL_SetRenderDrawColor(renderer, 0, 66, 0, 255);
-        SDL_FRect rect = {rect_x, rect_y, rect_w, rect_h};
-        SDL_RenderFillRect(renderer, &rect);
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+        SDL_FRect rect_red = {rect_x, rect_y, rect_w, rect_h};
+        SDL_RenderFillRect(renderer, &rect_red);
+
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+        SDL_FRect rect_green = {rect_x, rect_y + 10, rect_w, rect_h};
+        SDL_RenderFillRect(renderer, &rect_green);
+
+        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+        SDL_FRect rect_blue = {rect_x, rect_y + 20, rect_w, rect_h};
+        SDL_RenderFillRect(renderer, &rect_blue);
 
         // Present the rendered content to the screen
         SDL_RenderPresent(renderer);
