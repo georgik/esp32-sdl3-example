@@ -7,21 +7,20 @@
 #include "esp_vfs.h"
 #include "esp_littlefs.h"
 
-
 // Timer callback function
 Uint64 TimerCallback(void *param, Uint64 interval)
 {
-    printf("Timer callback executed!\n");
+    // printf("Timer callback executed!\n");
     return interval; // Return the interval to keep the timer running
 }
 
-void LoadAndDisplayImage(SDL_Renderer *renderer, const char *imagePath)
+SDL_Texture *LoadBackgroundImage(SDL_Renderer *renderer, const char *imagePath)
 {
     // Load the image into a surface
     SDL_Surface *imageSurface = SDL_LoadBMP(imagePath);
     if (!imageSurface) {
         printf("Failed to load image: %s\n", SDL_GetError());
-        return;
+        return NULL;
     }
 
     // Convert the surface to a texture
@@ -29,21 +28,9 @@ void LoadAndDisplayImage(SDL_Renderer *renderer, const char *imagePath)
     SDL_DestroySurface(imageSurface); // We no longer need the surface
     if (!imageTexture) {
         printf("Failed to create texture: %s\n", SDL_GetError());
-        return;
+        return NULL;
     }
-
-    // Clear the screen
-    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
-    SDL_RenderClear(renderer);
-
-    // Copy the texture to the renderer
-    SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
-
-    // Present the rendered content to the screen
-    SDL_RenderPresent(renderer);
-
-    // Clean up
-    SDL_DestroyTexture(imageTexture);
+    return imageTexture;
 }
 
 // Function to list files in a directory
@@ -145,6 +132,8 @@ void app_main(void)
 
     TestFileOpen("/assets/espressif.bmp");
 
+    SDL_Texture *imageTexture = LoadBackgroundImage(renderer, "/assets/espressif.bmp");
+
     // Create a repeating timer with a 1-second interval
     SDL_TimerID timer_id = SDL_AddTimer(1000, TimerCallback, NULL);
     if (timer_id == 0) {
@@ -163,9 +152,11 @@ void app_main(void)
     float speed = 2.0f;
     int direction = 1; // 1 for right, -1 for left
 
-    // Splash screen
-    LoadAndDisplayImage(renderer, "/assets/espressif.bmp");
     vTaskDelay(pdMS_TO_TICKS(1000)); // Approximately 60 frames per second
+
+    // Clear the screen
+    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
+    SDL_RenderClear(renderer);
 
     while (1) {
         // Move the rectangle
@@ -176,9 +167,8 @@ void app_main(void)
             direction *= -1;
         }
 
-        // Clear the screen
-        SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
-        SDL_RenderClear(renderer);
+        // Copy background image to whole background
+        SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
 
         // Draw the moving rectangle
         SDL_SetRenderDrawColor(renderer, 0, 66, 0, 255);
