@@ -105,6 +105,14 @@ void TestFileOpen(const char *file)
     }
 }
 
+void DrawColoredRect(SDL_Renderer *renderer, int x, int y, int w, int h, Uint8 r, Uint8 g, Uint8 b, int index)
+{
+    SDL_SetRenderDrawColor(renderer, r, g, b, 255);
+    SDL_FRect rect = {x, y + index * h, w, h};
+    SDL_RenderFillRect(renderer, &rect);
+}
+
+
 void app_main(void)
 {
     printf("SDL3 on ESP32\n");
@@ -171,17 +179,15 @@ void app_main(void)
         SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
 
         // Draw the moving rectangle
-        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-        SDL_FRect rect_red = {rect_x, rect_y, rect_w, rect_h};
-        SDL_RenderFillRect(renderer, &rect_red);
-
-        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
-        SDL_FRect rect_green = {rect_x, rect_y + 10, rect_w, rect_h};
-        SDL_RenderFillRect(renderer, &rect_green);
-
-        SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-        SDL_FRect rect_blue = {rect_x, rect_y + 20, rect_w, rect_h};
-        SDL_RenderFillRect(renderer, &rect_blue);
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 0, 0, 0, 0);     // Black
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 255, 0, 0, 1);   // Red
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 255, 165, 0, 2); // Orange
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 255, 255, 0, 3); // Yellow
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 0, 255, 0, 4);   // Green
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 0, 0, 255, 5);   // Blue
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 75, 0, 130, 6);  // Indigo
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 238, 130, 238, 7); // Violet
+        DrawColoredRect(renderer, rect_x, 20, 50, 10, 255, 255, 255, 8); // White
 
         // Present the rendered content to the screen
         SDL_RenderPresent(renderer);
