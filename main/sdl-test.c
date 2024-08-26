@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "SDL3/SDL.h"
+#include "SDL3_image/SDL_image.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -9,6 +10,38 @@ Uint64 TimerCallback(void *param, Uint64 interval)
     printf("Timer callback executed!\n");
     return interval; // Return the interval to keep the timer running
 }
+
+void LoadAndDisplayImage(SDL_Renderer *renderer, const char *imagePath)
+{
+    // Load the image into a surface
+    SDL_Surface *imageSurface = SDL_LoadBMP(imagePath);
+    if (!imageSurface) {
+        printf("Failed to load image: %s\n", SDL_GetError());
+        return;
+    }
+
+    // Convert the surface to a texture
+    SDL_Texture *imageTexture = SDL_CreateTextureFromSurface(renderer, imageSurface);
+    SDL_DestroySurface(imageSurface); // We no longer need the surface
+    if (!imageTexture) {
+        printf("Failed to create texture: %s\n", SDL_GetError());
+        return;
+    }
+
+    // Clear the screen
+    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
+    SDL_RenderClear(renderer);
+
+    // Copy the texture to the renderer
+    SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
+
+    // Present the rendered content to the screen
+    SDL_RenderPresent(renderer);
+
+    // Clean up
+    SDL_DestroyTexture(imageTexture);
+}
+
 
 void app_main(void)
 {
@@ -50,6 +83,10 @@ void app_main(void)
     // Speed of movement
     float speed = 2.0f;
     int direction = 1; // 1 for right, -1 for left
+
+    // Splash screen
+    LoadAndDisplayImage(renderer, "image.bmp");
+    vTaskDelay(pdMS_TO_TICKS(1000)); // Approximately 60 frames per second
 
     while (1) {
         // Move the rectangle
