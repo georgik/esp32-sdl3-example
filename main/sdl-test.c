@@ -42,6 +42,17 @@ void LoadAndDisplayImage(SDL_Renderer *renderer, const char *imagePath)
     SDL_DestroyTexture(imageTexture);
 }
 
+void TestFileOpen(const char *file)
+{
+    // Attempt to open the file in binary read mode
+    SDL_IOStream *rw = SDL_IOFromFile(file, "rb");
+    if (rw == NULL) {
+        printf("Failed to open file: %s\n", SDL_GetError());
+    } else {
+        printf("File opened successfully.\n");
+        // TODO Close stream
+    }
+}
 
 void app_main(void)
 {
@@ -83,6 +94,8 @@ void app_main(void)
     // Speed of movement
     float speed = 2.0f;
     int direction = 1; // 1 for right, -1 for left
+
+    TestFileOpen("image.bmp");
 
     // Splash screen
     LoadAndDisplayImage(renderer, "image.bmp");
