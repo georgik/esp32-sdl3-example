@@ -4,6 +4,10 @@ include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 project(sdl-test)
 
+get_filename_component(configName "${CMAKE_BINARY_DIR}" NAME)
+list(APPEND EXTRA_COMPONENT_DIRS "${CMAKE_SOURCE_DIR}/components/esp_littlefs")
+littlefs_create_partition_image(assets assets FLASH_IN_PROJECT)
+
 # Include the path to the prebuilt SDL3 library
 #set(SDL3_LIB_PATH ${CMAKE_SOURCE_DIR}/lib/libSDL3.a)
 
