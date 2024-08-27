@@ -7,9 +7,11 @@ Working parts:
 - SDL3 - littlefs integration
 - SDL3_timer
 - SDL_image - BMP
+- SDL_ttf
 
 Limitations:
-- color mapping
+- color mapping when stretching texture
+- drawing to main window works, but drawing with defined rect not produce result
 - screen resolution 320x100
 
 ## Build
@@ -22,10 +24,19 @@ cd components/SDL
 git clone --branch feature/esp-idf git@github.com:georgik/SDL.git
 cd ../..
 
+cd components/SDL_ttf
+git clone git@github.com:libsdl-org/SDL_ttf.git --depth 10
+cd ../..
+
 cd components/SDL_image
-git@github.com:libsdl-org/SDL_image.git --depth 10
+git clone git@github.com:libsdl-org/SDL_image.git --depth 10
 cd ../..
 
 idf.py set-target esp32-s3
 idf.py build
 ```
+
+
+## Credits
+
+- FreeSans.ttf - https://github.com/opensourcedesign/fonts/blob/master/gnu-freefont_freesans/FreeSans.ttf

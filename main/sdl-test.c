@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "SDL3/SDL.h"
 #include "SDL3_image/SDL_image.h"
+#include "SDL3_ttf/SDL_ttf.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 
@@ -136,11 +137,26 @@ void app_main(void)
         return;
     }
 
+    // Clear the screen
+    printf("Clear screen\n");
+    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
     SDL_InitFS();
 
     TestFileOpen("/assets/espressif.bmp");
 
-    SDL_Texture *imageTexture = LoadBackgroundImage(renderer, "/assets/espressif.bmp");
+    if (TTF_Init() == -1) {
+        printf("TTF_Init: %s\n", TTF_GetError());
+        return;
+    }
+
+    TTF_Font *font = TTF_OpenFont("/assets/FreeSans.ttf", 12);
+    if (!font) {
+        printf("Failed to load font: %s\n", TTF_GetError());
+        return;
+    }
 
     // Create a repeating timer with a 1-second interval
     SDL_TimerID timer_id = SDL_AddTimer(1000, TimerCallback, NULL);
@@ -160,12 +176,37 @@ void app_main(void)
     float speed = 2.0f;
     int direction = 1; // 1 for right, -1 for left
 
-    vTaskDelay(pdMS_TO_TICKS(1000)); // Approximately 60 frames per second
+    SDL_Color color = {255, 255, 255, 255};  // White color
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, "Hello ESP32", color);
+    if (!textSurface) {
+        printf("Failed to render text: %s\n", TTF_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
 
-    // Clear the screen
-    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
-    SDL_RenderClear(renderer);
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_DestroySurface(textSurface);
+    if (!textTexture) {
+        printf("Failed to create texture from surface: %s\n", SDL_GetError());
+        TTF_CloseFont(font);
+        return;
+    }
 
+    SDL_Rect Message_rect;
+    Message_rect.x = 0;
+    Message_rect.y = 0;
+    Message_rect.w = 100;
+    Message_rect.h = 100;
+
+    printf("Rendering text message\n");
+    SDL_RenderTexture(renderer, textTexture, NULL, &Message_rect);
+
+    SDL_RenderPresent(renderer);
+
+    printf("Loading image from file\n");
+    SDL_Texture *imageTexture = LoadBackgroundImage(renderer, "/assets/espressif.bmp");
+
+    printf("Main loop\n");
     while (1) {
         // Move the rectangle
         rect_x += speed * direction;
@@ -175,7 +216,17 @@ void app_main(void)
             direction *= -1;
         }
 
+        // Clear the screen
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        SDL_RenderClear(renderer);
+
         // Copy background image to whole background
+        SDL_Rect destRect;
+        destRect.x = 2.0f;  // X position on the screen
+        destRect.y = 2.0f;  // Y position on the screen
+        destRect.w = 20.0f;  // Width of the image
+        destRect.h = 20.0f;  // Height of the image
+
         SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
 
         // Draw the moving rectangle
@@ -188,6 +239,8 @@ void app_main(void)
         DrawColoredRect(renderer, rect_x, 20, 50, 10, 75, 0, 130, 6);  // Indigo
         DrawColoredRect(renderer, rect_x, 20, 50, 10, 238, 130, 238, 7); // Violet
         DrawColoredRect(renderer, rect_x, 20, 50, 10, 255, 255, 255, 8); // White
+
+        SDL_RenderTexture(renderer, textTexture, NULL, NULL);
 
         // Present the rendered content to the screen
         SDL_RenderPresent(renderer);
