@@ -10,7 +10,6 @@ Working parts:
 - SDL_ttf
 
 Limitations:
-- color mapping when stretching texture
 - drawing to main window works, but drawing with defined rect not produce result
 
 ## Build
@@ -38,6 +37,7 @@ idf.py build
 ## Notes
 
 - screen resolution bigger than 320x100 requires enabled PSRAM
+- SDL surface for ESP-IDF framebuffer is defined for RGB565
 
 ## Credits
 
