@@ -12,7 +12,6 @@ Working parts:
 Limitations:
 - color mapping when stretching texture
 - drawing to main window works, but drawing with defined rect not produce result
-- screen resolution 320x100
 
 ## Build
 
@@ -36,6 +35,9 @@ idf.py set-target esp32-s3
 idf.py build
 ```
 
+## Notes
+
+- screen resolution bigger than 320x100 requires enabled PSRAM
 
 ## Credits
 

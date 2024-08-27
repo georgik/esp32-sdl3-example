@@ -124,7 +124,8 @@ void app_main(void)
     }
     printf("SDL initialized successfully\n");
 
-    SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 120, 0);
+    // Resolution 320x240 requires PSRAM, 320x100 fits into regular RAM
+    SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 240, 0);
     if (!window) {
         printf("Failed to create window: %s\n", SDL_GetError());
         return;
