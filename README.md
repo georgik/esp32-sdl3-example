@@ -9,8 +9,6 @@ Working parts:
 - SDL_image - BMP
 - SDL_ttf
 
-Limitations:
-- drawing to main window works, but drawing with defined rect not produce result
 
 ## Build
 
@@ -38,6 +36,7 @@ idf.py build
 
 - screen resolution bigger than 320x100 requires enabled PSRAM
 - SDL surface for ESP-IDF framebuffer is defined for RGB565
+- drawing surface requires `SDL_FRect` as destination, not `SDL_Rect`, in `SDL_Rect` case nothing draws
 
 ## Credits
 

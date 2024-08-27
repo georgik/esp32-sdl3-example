@@ -222,13 +222,13 @@ void app_main(void)
         SDL_RenderClear(renderer);
 
         // Copy background image to whole background
-        SDL_Rect destRect;
+        SDL_FRect destRect;
         destRect.x = 2.0f;  // X position on the screen
         destRect.y = 2.0f;  // Y position on the screen
         destRect.w = 20.0f;  // Width of the image
         destRect.h = 20.0f;  // Height of the image
 
-        SDL_RenderTexture(renderer, imageTexture, NULL, NULL);
+        SDL_RenderTexture(renderer, imageTexture, NULL, &destRect);
 
         // Draw the moving rectangle
         DrawColoredRect(renderer, rect_x, 20, 50, 10, 0, 0, 0, 0);     // Black
