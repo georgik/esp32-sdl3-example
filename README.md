@@ -7,9 +7,11 @@ Working parts:
 - SDL3 - littlefs integration
 - SDL3_timer
 - SDL_image - BMP
+- SDL_ttf
 
 Limitations:
-- color mapping
+- color mapping when stretching texture
+- drawing to main window works, but drawing with defined rect not produce result
 - screen resolution 320x100
 
 ## Build
