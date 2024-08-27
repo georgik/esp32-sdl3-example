@@ -225,8 +225,8 @@ void app_main(void)
         SDL_FRect destRect;
         destRect.x = 2.0f;  // X position on the screen
         destRect.y = 2.0f;  // Y position on the screen
-        destRect.w = 20.0f;  // Width of the image
-        destRect.h = 20.0f;  // Height of the image
+        destRect.w = 32.0f;  // Width of the image
+        destRect.h = 32.0f;  // Height of the image
 
         SDL_RenderTexture(renderer, imageTexture, NULL, &destRect);
 
