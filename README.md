@@ -28,8 +28,30 @@ cd components/SDL_image
 git clone git@github.com:libsdl-org/SDL_image.git --depth 10
 cd ../..
 
-idf.py set-target esp32-s3
-idf.py build
+idf.py @boards/esp-box-3.cfg set-target esp32-s3
+idf.py @boards/esp-box-3.cfg build
+```
+
+### Other boards
+
+- ESP32-S3-BOX-3
+```shell
+idf.py @boards/esp-box-3.cfg reconfigure
+```
+
+- ESP32-S3-BOX (prior Dec. 2023)
+```shell
+idf.py @boards/esp-box.cfg reconfigure
+```
+
+- ESP32-P4
+```shell
+idf.py @boards/esp32_p4_function_ev_board.cfg reconfigure
+```
+
+- M5Stack-CoreS3
+```shell
+idf.py @boards/m5stack_core_s3.cfg reconfigure
 ```
 
 ## Notes
