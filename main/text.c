@@ -1,16 +1,17 @@
 #include "text.h"
 #include <stdio.h>
+#include "SDL3/SDL.h"
 #include "SDL3_ttf/SDL_ttf.h"
 
 TTF_Font* initialize_font(const char *fontPath, int fontSize) {
     if (TTF_Init() == -1) {
-        printf("TTF_Init: %s\n", TTF_GetError());
+        printf("TTF_Init: %s\n", SDL_GetError());
         return NULL;
     }
 
     TTF_Font *font = TTF_OpenFont(fontPath, fontSize);
     if (!font) {
-        printf("Failed to load font: %s\n", TTF_GetError());
+        printf("Failed to load font: %s\n", SDL_GetError());
     }
     return font;
 }
@@ -18,7 +19,7 @@ TTF_Font* initialize_font(const char *fontPath, int fontSize) {
 SDL_Texture* render_text(SDL_Renderer *renderer, TTF_Font *font, const char *text, SDL_Color color) {
     SDL_Surface *textSurface = TTF_RenderText_Solid(font, text, color);
     if (!textSurface) {
-        printf("Failed to render text: %s\n", TTF_GetError());
+        printf("Failed to render text: %s\n", SDL_GetError());
         return NULL;
     }
 

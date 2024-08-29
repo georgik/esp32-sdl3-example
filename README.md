@@ -5,28 +5,19 @@ Experimental port of SDL3 to ESP32 ESP-IDF v5.3.
 Working parts:
 - minimalistic SDL3 build
 - SDL3 - littlefs integration
-- SDL3_timer
-- SDL_image - BMP
-- SDL_ttf
+- SDL3\_timer
+- SDL\_image - BMP
+- SDL\_ttf
 
+## Requirements
+
+`idf_component_manager` 2.x - install manually
 
 ## Build
 
 ```
 git clone git@github.com:georgik/esp32-sdl3-test.git
 cd esp32-sdl3-test
-
-cd components/SDL
-git clone --branch feature/esp-idf git@github.com:georgik/SDL.git
-cd ../..
-
-cd components/SDL_ttf
-git clone git@github.com:libsdl-org/SDL_ttf.git --depth 10
-cd ../..
-
-cd components/SDL_image
-git clone git@github.com:libsdl-org/SDL_image.git --depth 10
-cd ../..
 
 idf.py @boards/esp-box-3.cfg set-target esp32-s3
 idf.py @boards/esp-box-3.cfg build

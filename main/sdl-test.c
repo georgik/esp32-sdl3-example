@@ -53,7 +53,9 @@ void app_main(void) {
         printf("Timer created successfully\n");
     }
 
+#ifndef CONFIG_IDF_TARGET_ESP32P4
     SDL_Texture *textTexture = render_text(renderer, font, "Hello ESP32 - SDL3", (SDL_Color){255, 255, 255, 255});
+#endif
     SDL_Texture *imageTexture = LoadBackgroundImage(renderer, "/assets/espressif.bmp");
 
     // Animation variables
@@ -101,7 +103,9 @@ void app_main(void) {
         clear_screen(renderer);
         draw_image(renderer, imageTexture, bmp_x, bmp_y, 32.0f, 32.0f);
         draw_moving_rectangles(renderer, rect_x);
+#ifndef CONFIG_IDF_TARGET_ESP32P4
         draw_text(renderer, textTexture, text_x, text_y, 120, 20 * text_scale);
+#endif
 
         SDL_RenderPresent(renderer);
         vTaskDelay(pdMS_TO_TICKS(16));
