@@ -5,10 +5,13 @@ Experimental port of SDL3 to ESP32 ESP-IDF v5.3.
 Working parts:
 - minimalistic SDL3 build
 - SDL3 - littlefs integration
-- SDL3_timer
-- SDL_image - BMP
-- SDL_ttf
+- SDL3\_timer
+- SDL\_image - BMP
+- SDL\_ttf
 
+## Requirements
+
+`idf_component_manager` 2.x - install manually
 
 ## Build
 
