@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
 
+# Select board configuration based on -DBUILD_BOARD
+if(NOT DEFINED BUILD_BOARD)
+    message(FATAL_ERROR "BUILD_BOARD CMake variable is not set. Use idf.py @boards/BOARD.cfg reconfigure")
+endif()
+
+set(ENV{BUILD_BOARD} ${BUILD_BOARD})
+
+# set(COMPONENTS main) # "Trim" the build. Include the minimal set of components; main and anything it depends on.
+
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 project(sdl-test)
