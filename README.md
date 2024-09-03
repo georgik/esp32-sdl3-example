@@ -6,8 +6,10 @@ Working parts:
 - minimalistic SDL3 build
 - SDL3 - littlefs integration
 - SDL3\_timer
+- SDL3\_events
 - SDL\_image - BMP
 - SDL\_ttf
+- touch
 
 ## Requirements
 
