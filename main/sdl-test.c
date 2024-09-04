@@ -8,6 +8,10 @@
 #include "filesystem.h"
 #include "text.h"
 
+#include <lua.h>
+#include <lualib.h>
+#include <lauxlib.h>
+
 
 Uint64 TimerCallback(void *param, Uint64 interval)
 {
@@ -74,6 +78,26 @@ void app_main(void) {
     float text_scale = 1.0f, text_scale_speed = 0.01f;
     int text_direction_x = 1, text_direction_y = 1;
     int scale_direction = 1;
+
+    printf("Starting Lua\n");
+    lua_State *L = luaL_newstate();
+    printf("Opening Lua Libs\n");
+    luaL_openlibs(L);
+
+    printf("Calling Lua code: \n");
+    lua_pushinteger(L, 42);
+    lua_setglobal(L, "answer");
+
+    char * code = "print(answer)";
+
+    if (luaL_dostring(L, code) == LUA_OK) {
+        lua_pop(L, lua_gettop(L));
+    }
+
+    printf("Closing Lua\n");
+    lua_close(L);
+
+    printf("Entering main loop...\n");
 
     while (1) {
         // Move the BMP image
