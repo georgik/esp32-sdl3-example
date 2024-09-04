@@ -7,7 +7,7 @@ endif()
 
 set(ENV{BUILD_BOARD} ${BUILD_BOARD})
 
-# set(COMPONENTS main) # "Trim" the build. Include the minimal set of components; main and anything it depends on.
+set(COMPONENTS main) # "Trim" the build. Include the minimal set of components; main and anything it depends on.
 
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
