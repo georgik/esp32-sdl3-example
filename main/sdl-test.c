@@ -22,7 +22,7 @@ Uint64 TimerCallback(void *param, Uint64 interval)
 void app_main(void) {
     printf("SDL3 on ESP32\n");
 
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
         printf("Unable to initialize SDL: %s\n", SDL_GetError());
         return;
     }
@@ -99,7 +99,25 @@ void app_main(void) {
 
     printf("Entering main loop...\n");
 
+    SDL_Event event;
+
     while (1) {
+
+      while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_EVENT_QUIT:
+                    // Handle quit event (if needed)
+                    break;
+
+                case SDL_EVENT_FINGER_UP:
+                    bmp_x = (float)event.tfinger.x;
+                    bmp_y = (float)event.tfinger.y;
+
+                    printf("Finger up [%f, %f]\n", bmp_x, bmp_y);
+                    break;
+            }
+        }
+
         // Move the BMP image
         bmp_x += bmp_speed_x;
         bmp_y += bmp_speed_y;
