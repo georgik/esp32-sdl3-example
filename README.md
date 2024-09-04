@@ -9,6 +9,7 @@ Working parts:
 - SDL3\_events
 - SDL\_image - BMP
 - SDL\_ttf
+- Lua 5.5
 - touch
 
 ## Requirements
