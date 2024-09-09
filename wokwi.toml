@@ -2,6 +2,6 @@
 # Reference: https://docs.wokwi.com/vscode/project-config
 [wokwi]
 version = 1
-firmware = 'build/flasher_args.json'
-elf = 'build/sdl-test.elf'
+firmware = 'build.esp-box/flasher_args.json'
+elf = 'build.esp-box/sdl-test.elf'
 gdbServerPort=3333
