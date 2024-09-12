@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include "SDL3/SDL.h"
+#include "SDL3/SDL_esp-idf.h"
 #include "SDL3_image/SDL_image.h"
 #include "SDL3_ttf/SDL_ttf.h"
+#include "bsp/esp-bsp.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "graphics.h"
@@ -27,7 +29,12 @@ void app_main(void) {
     }
     printf("SDL initialized successfully\n");
 
-    SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 240, 0);
+    /* PPA Configuration with scaler - enable following lines if you want to see scaler in action */
+    // SDL_Window *window = SDL_CreateWindow("SDL on ESP32", 320, 200, 0);
+    // set_scale_factor(3,3.0);
+    /* end of PPA */
+
+    SDL_Window *window = SDL_CreateWindow("SDL on ESP32", BSP_LCD_H_RES, BSP_LCD_V_RES, 0);
     if (!window) {
         printf("Failed to create window: %s\n", SDL_GetError());
         return;
@@ -120,13 +127,13 @@ void app_main(void) {
         bmp_y += bmp_speed_y;
 
         // Check for collisions with screen edges and bounce
-        if (bmp_x <= 0 || bmp_x + 32 >= 320) bmp_speed_x *= -1;
-        if (bmp_y <= 0 || bmp_y + 32 >= 240) bmp_speed_y *= -1;
+        if (bmp_x <= 0 || bmp_x + 32 >= BSP_LCD_H_RES) bmp_speed_x *= -1;
+        if (bmp_y <= 0 || bmp_y + 32 >= BSP_LCD_V_RES) bmp_speed_y *= -1;
 
         // Move the rectangle and bounce it
         rect_x += speed * direction;
 
-        if (rect_x <= 0 || rect_x + 50 >= 320) direction *= -1;
+        if (rect_x <= 0 || rect_x + 50 >= BSP_LCD_H_RES) direction *= -1;
 
        // Move the text and bounce it
         text_x += text_speed_x * text_direction_x;

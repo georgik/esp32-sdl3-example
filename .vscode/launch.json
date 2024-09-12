@@ -5,7 +5,7 @@
       "name": "Wokwi GDB",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/sdl-test.elf",
+      "program": "${workspaceFolder}/build.esp-box/sdl-test.elf",
       "cwd": "${workspaceFolder}",
       "MIMode": "gdb",
       "miDebuggerPath": "${command:espIdf.getToolchainGdb}",
