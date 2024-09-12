@@ -12,8 +12,7 @@
 #include <lualib.h>
 #include <lauxlib.h>
 
-
-Uint64 TimerCallback(void *param, Uint64 interval)
+Uint32 SDLCALL TimerCallback(void *param, SDL_TimerID timerID, Uint32 interval)
 {
     // printf("Timer callback executed!\n");
     return interval; // Return the interval to keep the timer running

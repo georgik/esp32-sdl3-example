@@ -8,7 +8,7 @@
       "id": "esp",
       "attrs": {
         "flashSize": "16",
-        "psramSize": "8"
+        "psramSize": "16"
       }
     }
   ],
