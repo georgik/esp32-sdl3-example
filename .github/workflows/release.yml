@@ -38,8 +38,10 @@ jobs:
           workflow: build.yml
           path: artifacts
 
-      - name: Install GitHub CLI
-        run: sudo apt-get install gh
+      - name: List Downloaded Files
+        run: |
+          echo "Listing all files in the artifacts directory:"
+          find artifacts -type f
 
       - name: Authenticate GitHub CLI
         run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
@@ -47,15 +49,13 @@ jobs:
       - name: Rename and Upload Assets to Release
         run: |
           # List all binary files in the artifacts directory
-          for file in artifacts/*.bin; do
-            # Extract board name from the file name
+          for file in $(find artifacts -type f -name "*.bin"); do
+            # Extract board name from the directory structure
             board_name=$(basename "$file" | sed -n "s/${{ github.event.inputs.prefix }}-\(.*\)\.bin/\1/p")
             # Define the versioned asset name
             asset_name="${{ github.event.inputs.prefix }}-${{ github.event.inputs.release_tag }}-${board_name}.bin"
-            # Rename the file with the versioned asset name
-            mv "$file" "artifacts/$asset_name"
             # Upload the artifact to the release
-            gh release upload "${{ github.event.inputs.release_tag }}" "artifacts/$asset_name" --clobber
+            gh release upload "${{ github.event.inputs.release_tag }}" "$file" --name "$asset_name" --clobber
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
