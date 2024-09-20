@@ -48,10 +48,10 @@ jobs:
         run: |
           echo "ESPTOOL_PARAMS=$(case ${{ matrix.board }} in
             esp-box-3 | esp-box | m5stack_core_s3)
-              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x0 bootloader/bootloader.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x8000 partition_table/partition-table.bin 0x310000 ${{ github.event.inputs.data_partition }}'
+              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x0 bootloader/bootloader.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x8000 partition_table/partition-table.bin 0x310000 ${{ github.event.inputs.data_partition }}.bin'
               ;;
             esp32_p4_function_ev_board)
-              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x2000 bootloader/bootloader.bin 0x8000 partition_table/partition-table.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x310000 ${{ github.event.inputs.data_partition }}'
+              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x2000 bootloader/bootloader.bin 0x8000 partition_table/partition-table.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x310000 ${{ github.event.inputs.data_partition }}.bin'
               ;;
             *) echo 'Unknown board'; exit 1;;
           esac)" >> $GITHUB_ENV
