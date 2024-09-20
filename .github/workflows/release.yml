@@ -24,13 +24,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+
+      - name: Check if Release Exists
+        id: check_release
+        run: |
+          set +e
+          gh release view ${{ github.event.inputs.release_tag }} > /dev/null 2>&1
+          if [ $? -eq 0 ]; then
+            echo "Release already exists."
+            echo "release_exists=true" >> $GITHUB_ENV
+          else
+            echo "Release does not exist."
+            echo "release_exists=false" >> $GITHUB_ENV
+          fi
+          set -e
+
       - name: Create Release
-        uses: elgohr/Github-Release-Action@v5
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          title: ${{ github.event.inputs.release_name }}
-          tag: ${{ github.event.inputs.release_tag }}
+        if: env.release_exists == 'false'
+        run: |
+          gh release create ${{ github.event.inputs.release_tag }} --title "${{ github.event.inputs.release_name }}" --prerelease
 
       - name: Download Build Artifacts
         uses: dawidd6/action-download-artifact@v6
@@ -42,9 +59,6 @@ jobs:
         run: |
           echo "Listing all files in the artifacts directory:"
           find artifacts -type f
-
-      - name: Authenticate GitHub CLI
-        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Rename and Upload Assets to Release
         run: |
