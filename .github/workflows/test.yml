@@ -28,3 +28,19 @@ jobs:
           name: ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
           path: build.${{ matrix.board }}
 
+      - name: Setup Wokwi CLI
+        uses: wokwi/wokwi-ci-action@v1
+        with:
+          token: ${{ secrets.WOKWI_CLI_TOKEN }}
+          path: .
+          elf: build.${{ matrix.board }}/${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
+          timeout: 30000
+          expect_text: 'SDL3 on ESP32'
+          fail_text: 'Error'
+          serial_log_file: 'wokwi-logs-${{ matrix.board }}.txt'
+
+      - name: Upload Wokwi Logs
+        uses: actions/upload-artifact@v4
+        with:
+          name: wokwi-logs-${{ matrix.board }}
+          path: wokwi-logs-${{ matrix.board }}.txt
