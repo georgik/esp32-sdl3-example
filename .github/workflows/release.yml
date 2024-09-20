@@ -1,0 +1,53 @@
+name: Create GitHub Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: 'Name of the GitHub Release'
+        required: true
+        default: 'v1.0.0'
+      release_tag:
+        description: 'Tag for the GitHub Release'
+        required: true
+        default: 'v1.0.0'
+      prefix:
+        description: 'Prefix for binary name'
+        required: true
+        default: 'esp32-sdl3-example'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.release_tag }}
+          release_name: ${{ github.event.inputs.release_name }}
+          draft: false
+          prerelease: true
+
+      - name: Download Build Artifacts
+        uses: dawidd6/action-download-artifact@v6
+        with:
+          workflow: build.yml
+          path: artifacts
+
+      - name: Rename and Upload Assets to Release
+        run: |
+          # List all binary files in the artifacts directory
+          for file in artifacts/*.bin; do
+            # Extract board name from the file name
+            board_name=$(basename "$file" | sed -n "s/${{ github.event.inputs.prefix }}-\(.*\)\.bin/\1/p")
+            # Define the versioned asset name
+            asset_name="${{ github.event.inputs.prefix }}-${{ github.event.inputs.release_tag }}-${board_name}.bin"
+            # Upload the artifact to the release
+            gh release upload "${{ steps.create_release.outputs.upload_url }}" "$file" --name "$asset_name"
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
