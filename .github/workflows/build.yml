@@ -1,0 +1,65 @@
+name: Build ESP32 Application
+
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        description: 'Board to build for (all or specific board name)'
+        required: true
+        default: 'all'
+      prefix:
+        description: 'Prefix for binary name'
+        required: true
+        default: 'esp32-sdl3-test'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board: [esp-box-3, esp-box, m5stack_core_s3, esp32_p4_function_ev_board]
+      fail-fast: false
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set Target for ESP-IDF
+        run: |
+          echo "TARGET=$(case ${{ matrix.board }} in
+            esp-box-3) echo 'esp32s3';;
+            esp-box) echo 'esp32s3';;
+            m5stack_core_s3) echo 'esp32s3';;
+            esp32_p4_function_ev_board) echo 'esp32p4';;
+            *) echo 'Unknown target'; exit 1;;
+          esac)" >> $GITHUB_ENV
+
+      - name: Set esptool Parameters
+        run: |
+          echo "ESPTOOL_PARAMS=$(case ${{ matrix.board }} in
+            esp-box-3 | esp-box | m5stack_core_s3)
+              echo '--flash_mode dio --flash_freq 80m --flash_size 16MB 0x0 bootloader/bootloader.bin 0x10000 esp32-open-tyrian.bin 0x8000 partition_table/partition-table.bin 0x310000 storage.bin'
+              ;;
+            esp32_p4_function_ev_board)
+              echo '--flash_mode dio --flash_freq 80m --flash_size 16MB 0x2000 bootloader/bootloader.bin 0x8000 partition_table/partition-table.bin 0x10000 esp32-open-tyrian.bin 0x310000 storage.bin'
+              ;;
+            *) echo 'Unknown board'; exit 1;;
+          esac)" >> $GITHUB_ENV
+
+      - name: esp-idf build and merge binaries
+        uses: espressif/esp-idf-ci-action@v1.1.0
+        with:
+          esp_idf_version: latest
+          target: ${{ env.TARGET }}
+          path: '.'
+          command: |
+            idf.py @boards/${{ matrix.board }}.cfg build &&
+            cd build.${{ matrix.board }} &&
+            esptool.py --chip ${{ env.TARGET }} merge_bin --output ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin ${{ env.ESPTOOL_PARAMS }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build.${{ matrix.board }}
+          path: build.${{ matrix.board }}/${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
