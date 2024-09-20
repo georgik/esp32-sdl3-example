@@ -69,7 +69,7 @@ jobs:
             # Define the versioned asset name
             asset_name="${{ github.event.inputs.prefix }}-${{ github.event.inputs.release_tag }}-${board_name}.bin"
             # Upload the artifact to the release
-            gh release upload "${{ github.event.inputs.release_tag }}" "$file" --name "$asset_name" --clobber
+            gh release upload "${{ github.event.inputs.release_tag }}" "$file#${asset_name}" --clobber
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
