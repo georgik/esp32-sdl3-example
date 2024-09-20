@@ -21,22 +21,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
+        uses: elgohr/Github-Release-Action@v5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.release_tag }}
-          release_name: ${{ github.event.inputs.release_name }}
-          draft: false
-          prerelease: true
+          title: ${{ github.event.inputs.release_name }}
+          tag: ${{ github.event.inputs.release_tag }}
 
       - name: Download Build Artifacts
         uses: dawidd6/action-download-artifact@v6
         with:
           workflow: build.yml
           path: artifacts
+
+      - name: Install GitHub CLI
+        run: sudo apt-get install gh
+
+      - name: Authenticate GitHub CLI
+        run: gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
 
       - name: Rename and Upload Assets to Release
         run: |
@@ -46,8 +52,10 @@ jobs:
             board_name=$(basename "$file" | sed -n "s/${{ github.event.inputs.prefix }}-\(.*\)\.bin/\1/p")
             # Define the versioned asset name
             asset_name="${{ github.event.inputs.prefix }}-${{ github.event.inputs.release_tag }}-${board_name}.bin"
+            # Rename the file with the versioned asset name
+            mv "$file" "artifacts/$asset_name"
             # Upload the artifact to the release
-            gh release upload "${{ steps.create_release.outputs.upload_url }}" "$file" --name "$asset_name"
+            gh release upload "${{ github.event.inputs.release_tag }}" "artifacts/$asset_name" --clobber
           done
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
