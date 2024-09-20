@@ -14,7 +14,7 @@ on:
       flash_size:
         description: 'Size of the Flash storage'
         required: true
-        default: '2MB'
+        default: '4MB'
       data_partition:
         description: 'Name of data partition'
         required: true
