@@ -44,18 +44,6 @@ jobs:
             *) echo 'Unknown target'; exit 1;;
           esac)" >> $GITHUB_ENV
 
-      - name: Set esptool Parameters
-        run: |
-          echo "ESPTOOL_PARAMS=$(case ${{ matrix.board }} in
-            esp-box-3 | esp-box | m5stack_core_s3)
-              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x0 bootloader/bootloader.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x8000 partition_table/partition-table.bin 0x310000 ${{ github.event.inputs.data_partition }}.bin'
-              ;;
-            esp32_p4_function_ev_board)
-              echo '--flash_mode dio --flash_freq 80m --flash_size ${{ github.event.inputs.flash_size }} 0x2000 bootloader/bootloader.bin 0x8000 partition_table/partition-table.bin 0x10000 ${{ github.event.inputs.prefix }}.bin 0x310000 ${{ github.event.inputs.data_partition }}.bin'
-              ;;
-            *) echo 'Unknown board'; exit 1;;
-          esac)" >> $GITHUB_ENV
-
       - name: esp-idf build and merge binaries
         uses: espressif/esp-idf-ci-action@v1.1.0
         with:
@@ -65,7 +53,7 @@ jobs:
           command: |
             idf.py @boards/${{ matrix.board }}.cfg build &&
             cd build.${{ matrix.board }} &&
-            esptool.py --chip ${{ env.TARGET }} merge_bin --output ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin ${{ env.ESPTOOL_PARAMS }}
+            esptool.py --chip ${{ env.TARGET }} merge_bin -o ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin @flasher_args.json
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
