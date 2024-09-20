@@ -1,6 +1,8 @@
-# Test of port of SDL3 for ESP32
+# Example of SDL3 for ESP32
 
-Experimental port of SDL3 to ESP32 ESP-IDF v5.3.
+![Test Status](https://github.com/georgik/esp32-sdl3-test/actions/workflows/test.yml/badge.svg)
+
+Fork of SDL3 to ESP32 ESP-IDF v5.3+
 
 Working parts:
 - minimalistic SDL3 build
