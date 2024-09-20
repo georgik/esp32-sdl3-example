@@ -4,6 +4,12 @@
 
 Fork of SDL3 to ESP32 ESP-IDF v5.3+
 
+## On-line Demo Simulation
+
+[![ESP32-P4 SDL3 Demo Simulation](docs/img/esp32-p4-sdl3.webp)](https://wokwi.com/experimental/viewer?diagram=https%3A%2F%2Fraw.githubusercontent.com%2Fgeorgik%2Fesp32-sdl3-example%2Fmain%2Fboards%2Fesp32_p4_function_ev_board%2Fdiagram.json&firmware=https%3A%2F%2Fgithub.com%2Fgeorgik%2Fesp32-sdl3-example%2Freleases%2Fdownload%2Fv0.2.0%2Fesp32-sdl3-example-esp32_p4_function_ev_board.bin)
+
+[Run the ESP32-P4 simulation with Wokwi.com](https://wokwi.com/experimental/viewer?diagram=https%3A%2F%2Fraw.githubusercontent.com%2Fgeorgik%2Fesp32-sdl3-example%2Fmain%2Fboards%2Fesp32_p4_function_ev_board%2Fdiagram.json&firmware=https%3A%2F%2Fgithub.com%2Fgeorgik%2Fesp32-sdl3-example%2Freleases%2Fdownload%2Fv0.2.0%2Fesp32-sdl3-example-esp32_p4_function_ev_board.bin)
+
 Working parts:
 - minimalistic SDL3 build
 - SDL3 - littlefs integration
