@@ -1,0 +1,27 @@
+name: Test ESP32 Application
+
+on:
+  workflow_dispatch:
+    inputs:
+      prefix:
+        description: 'Prefix for binary name'
+        required: true
+        default: 'esp32-sdl3-example'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        board: [esp-box-3, esp-box, m5stack_core_s3, esp32_p4_function_ev_board]
+      fail-fast: false
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
+          path: build.${{ matrix.board }}
