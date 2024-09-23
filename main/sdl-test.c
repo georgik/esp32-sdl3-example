@@ -23,6 +23,9 @@ Uint32 SDLCALL TimerCallback(void *param, SDL_TimerID timerID, Uint32 interval)
 void app_main(void) {
     printf("SDL3 on ESP32\n");
 
+    SDL_InitFS();
+    TestFileOpen("/assets/espressif.bmp");
+
     if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
         printf("Unable to initialize SDL: %s\n", SDL_GetError());
         return;
@@ -49,8 +52,6 @@ void app_main(void) {
 
     clear_screen(renderer);
 
-    SDL_InitFS();
-    TestFileOpen("/assets/espressif.bmp");
 
     TTF_Font *font = initialize_font("/assets/FreeSans.ttf", 12);
     if (!font) return;
@@ -152,6 +153,6 @@ void app_main(void) {
         draw_text(renderer, textTexture, text_x, text_y, 120, 20 * text_scale);
 
         SDL_RenderPresent(renderer);
-        vTaskDelay(pdMS_TO_TICKS(16));
+        vTaskDelay(pdMS_TO_TICKS(10000));
     }
 }

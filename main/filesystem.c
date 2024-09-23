@@ -2,9 +2,31 @@
 #include <stdio.h>
 #include "esp_vfs.h"
 #include "esp_littlefs.h"
+#include "esp_log.h"
+#include "esp_psram.h"
+
 
 void SDL_InitFS(void) {
     printf("Initialising File System\n");
+
+    printf("Free heap size: %ld\n", esp_get_free_heap_size());
+
+    esp_log_level_set("littlefs", ESP_LOG_DEBUG);
+    esp_log_level_set("spi_flash", ESP_LOG_DEBUG);
+
+
+    if (esp_psram_init() != ESP_OK) {
+        printf("PSRAM Initialization failed!\n");
+    } else {
+        printf("PSRAM Initialized.\n");
+    }
+
+    const esp_partition_t *partition = esp_partition_find_first(ESP_PARTITION_TYPE_DATA, ESP_PARTITION_SUBTYPE_ANY, "assets");
+    if (partition == NULL) {
+        printf("Assets partition not found!\n");
+    } else {
+        printf("Assets partition found: size: %ld, address: %lx\n", partition->size, partition->address);
+    }
 
     esp_vfs_littlefs_conf_t conf = {
         .base_path = "/assets",
