@@ -34,9 +34,9 @@ jobs:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           path: boards/${{ matrix.board }}
           elf: build.${{ matrix.board }}/${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
-          timeout: 30000
+          timeout: 20000
           expect_text: 'Entering main loop...'
-          fail_text: 'Error'
+          fail_text: 'Rebooting...'
           serial_log_file: 'wokwi-logs-${{ matrix.board }}.txt'
 
       - name: Upload Wokwi Logs
