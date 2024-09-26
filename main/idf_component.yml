@@ -20,14 +20,23 @@ dependencies:
     version: "^1.2.0"
     rules:
     - if: "${BUILD_BOARD} == esp-box-3"
+
   espressif/esp-box:
     version: "3.1.0"
     rules:
     - if: "${BUILD_BOARD} == esp-box"
-  espressif/m5stack_core_s3:
-    version: "1.1.1"
+
+  espressif/m5stack_core_s3_noglib:
+    version: "==1.1.1~1"
     rules:
-    - if: "${BUILD_BOARD} == m5stack_core_s3"
+    - if: "${BUILD_BOARD} == m5stack_core_s3_noglib"
+  # Workaround for the conflict of I2C drivers in ESP-IDF 5.3+
+  esp_codec_dev:
+    public: true
+    version: "==1.1.0"
+    rules:
+    - if: "${BUILD_BOARD} == m5stack_core_s3_noglib"
+
   espressif/esp32_p4_function_ev_board_noglib:
     version: "3.0.1"
     rules:
