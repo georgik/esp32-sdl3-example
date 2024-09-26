@@ -26,11 +26,10 @@ Working parts:
 
 ## Build
 
-```
+```shell
 git clone git@github.com:georgik/esp32-sdl3-test.git
 cd esp32-sdl3-test
 
-idf.py @boards/esp-box-3.cfg set-target esp32-s3
 idf.py @boards/esp-box-3.cfg build
 ```
 
@@ -38,22 +37,22 @@ idf.py @boards/esp-box-3.cfg build
 
 - ESP32-S3-BOX-3
 ```shell
-idf.py @boards/esp-box-3.cfg reconfigure
+idf.py @boards/esp-box-3.cfg build
 ```
 
 - ESP32-S3-BOX (prior Dec. 2023)
 ```shell
-idf.py @boards/esp-box.cfg reconfigure
+idf.py @boards/esp-box.cfg build
 ```
 
 - ESP32-P4
 ```shell
-idf.py @boards/esp32_p4_function_ev_board.cfg reconfigure
+idf.py @boards/esp32_p4_function_ev_board.cfg build
 ```
 
 - M5Stack-CoreS3
 ```shell
-idf.py @boards/m5stack_core_s3.cfg reconfigure
+idf.py @boards/m5stack_core_s3.cfg build
 ```
 
 ## Notes

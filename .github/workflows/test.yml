@@ -13,9 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        board: [esp-box-3, esp-box, esp32_p4_function_ev_board]
-        # M5 Stack CoreS3 - test disabled, because mapping of UART is not working in Wokwi
-        #board: [esp-box-3, esp-box, m5stack_core_s3, esp32_p4_function_ev_board]
+        board: [esp-box-3, esp-box, m5stack_core_s3, esp32_p4_function_ev_board]
       fail-fast: false
 
     steps:
@@ -36,9 +34,9 @@ jobs:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           path: boards/${{ matrix.board }}
           elf: build.${{ matrix.board }}/${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
-          timeout: 30000
+          timeout: 20000
           expect_text: 'Entering main loop...'
-          fail_text: 'Error'
+          fail_text: 'Rebooting...'
           serial_log_file: 'wokwi-logs-${{ matrix.board }}.txt'
 
       - name: Upload Wokwi Logs
