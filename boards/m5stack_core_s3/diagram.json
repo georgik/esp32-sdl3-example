@@ -3,21 +3,12 @@
   "author": "Uri Shaked",
   "editor": "wokwi",
   "parts": [
-    {
-      "type": "board-m5stack-core-s3",
-      "id": "esp"
-    }
+    { "type": "board-m5stack-core-s3", "id": "esp", "top": 0, "left": 0, "attrs": {} }
   ],
   "connections": [
-    [
-      "esp:TX",
-      "$serialMonitor:RX",
-      ""
-    ],
-    [
-      "esp:RX",
-      "$serialMonitor:TX",
-      ""
-    ]
-  ]
+    [ "esp:G43", "$serialMonitor:RX", "", [] ],
+    [ "esp:G44", "$serialMonitor:TX", "", [] ]
+
+  ],
+  "dependencies": {}
 }
