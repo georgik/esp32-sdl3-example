@@ -2,10 +2,20 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Wokwi GDB",
+      "name": "esp-box - Wokwi GDB",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build.esp-box/sdl-test.elf",
+      "program": "${workspaceFolder}/build.esp-box/esp32-sdl3-example.elf",
+      "cwd": "${workspaceFolder}",
+      "MIMode": "gdb",
+      "miDebuggerPath": "${command:espIdf.getToolchainGdb}",
+      "miDebuggerServerAddress": "localhost:3333"
+    },
+    {
+      "name": "m5stack_core_s3 - Wokwi GDB",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build.m5stack_core_s3/esp32-sdl3-example.elf",
       "cwd": "${workspaceFolder}",
       "MIMode": "gdb",
       "miDebuggerPath": "${command:espIdf.getToolchainGdb}",
