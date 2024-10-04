@@ -2,7 +2,7 @@
 #include <pthread.h>
 #include "SDL3/SDL.h"
 #include "SDL3/SDL_esp-idf.h"
-#include "SDL3_image/SDL_image.h"
+//#include "SDL3_image/SDL_image.h"
 #include "SDL3_ttf/SDL_ttf.h"
 #include "bsp/esp-bsp.h"
 #include "freertos/FreeRTOS.h"
@@ -23,7 +23,7 @@ Uint32 SDLCALL TimerCallback(void *param, SDL_TimerID timerID, Uint32 interval)
 void* sdl_thread(void* args) {
     printf("SDL3 on ESP32\n");
 
-    if (SDL_Init(SDL_INIT_TIMER | SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) == false) {
         printf("Unable to initialize SDL: %s\n", SDL_GetError());
         return NULL;
     }

@@ -4,11 +4,11 @@ dependencies:
   # espressif/freetype: "^2.13.0~3"
   # espressif/esp-box: "^3.1.0~1"
   joltwallet/littlefs: "==1.14.8"
-  georgik/sdl: "^3.1.2~5"
+  georgik/sdl: "^3.1.2~6"
 #    git: https://github.com/georgik/esp-idf-component-SDL.git
-  georgik/sdl_image: "^3.0.0~1"
+#  georgik/sdl_image: "^3.0.0~1"
 #    git: https://github.com/georgik/esp-idf-component-SDL_image.git
-  georgik/sdl_ttf: "^3.0.0~2"
+  georgik/sdl_ttf: "^3.0.0~3"
 #    git: https://github.com/georgik/esp-idf-component-SDL_ttf.git
 
   ## Required IDF version
