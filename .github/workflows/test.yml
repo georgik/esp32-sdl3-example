@@ -28,8 +28,11 @@ jobs:
           name: ${{ github.event.inputs.prefix }}-${{ matrix.board }}.bin
           path: build.${{ matrix.board }}
 
-      - name: Run tests using Wokwi CI Server
+      - name: Use Wokwi CI Server
         uses: wokwi/wokwi-ci-server-action@v1
+
+      - name: Run tests using Wokwi CLI
+        uses: wokwi/wokwi-ci-action@v1
         with:
           token: ${{ secrets.WOKWI_CLI_TOKEN }}
           path: boards/${{ matrix.board }}
