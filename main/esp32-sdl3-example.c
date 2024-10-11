@@ -136,7 +136,7 @@ void app_main(void) {
 
     pthread_attr_t attr;
     pthread_attr_init(&attr);
-    pthread_attr_setstacksize(&attr, 8192);  // Set the stack size for the thread
+    pthread_attr_setstacksize(&attr, 32768);  // Set the stack size for the thread
 
     int ret = pthread_create(&sdl_pthread, &attr, sdl_thread, NULL);
     if (ret != 0) {
