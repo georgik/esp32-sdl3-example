@@ -5,5 +5,5 @@ idf_component_register(
         "filesystem.c"
         "graphics.c"
     INCLUDE_DIRS "."
-    REQUIRES love
+    REQUIRES love esp_lcd
 )
