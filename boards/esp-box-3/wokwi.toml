@@ -1,0 +1,6 @@
+# Wokwi Configuration File
+# Reference: https://docs.wokwi.com/vscode/project-config
+[wokwi]
+version = 1
+firmware = 'build.esp-box-3/flasher_args.json'
+elf = 'build.esp-box-3/esp32-sdl3-example.elf'

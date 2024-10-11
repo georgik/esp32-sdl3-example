@@ -1,0 +1,8 @@
+# Wokwi Configuration File
+# Reference: https://docs.wokwi.com/vscode/project-config
+[wokwi]
+version = 1
+firmware = 'build.m5stack_core_s3/flasher_args.json'
+elf = 'build.m5stack_core_s3/esp32-sdl3-example.elf'
+gdbServerPort=3333
+
