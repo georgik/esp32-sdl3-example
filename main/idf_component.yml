@@ -10,6 +10,8 @@ dependencies:
 #    git: https://github.com/georgik/esp-idf-component-SDL_image.git
   georgik/sdl_ttf: "^3.0.0~3"
 #    git: https://github.com/georgik/esp-idf-component-SDL_ttf.git
+  georgik/ogg: "^1.3.5~1"
+  georgik/theora: "^1.1.1"
 
   ## Required IDF version
   idf:
