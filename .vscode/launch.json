@@ -20,6 +20,16 @@
       "MIMode": "gdb",
       "miDebuggerPath": "${command:espIdf.getToolchainGdb}",
       "miDebuggerServerAddress": "localhost:3333"
+    },
+    {
+        "name": "esp32_p4_function_ev_board - Wokwi GDB",
+        "type": "cppdbg",
+        "request": "launch",
+        "program": "${workspaceFolder}/build.esp32_p4_function_ev_board/esp32-sdl3-example.elf",
+        "cwd": "${workspaceFolder}",
+        "MIMode": "gdb",
+        "miDebuggerPath": "${command:espIdf.getToolchainGdb}",
+        "miDebuggerServerAddress": "localhost:3333"
     }
   ]
 }
