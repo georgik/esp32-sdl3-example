@@ -46,6 +46,8 @@ void* sdl_thread(void* args) {
         return NULL;
     }
 
+    SDL_InitFS();
+
     // Initialize Lua state
     lua_State *L = luaL_newstate();
     if (!L) {
@@ -57,9 +59,23 @@ void* sdl_thread(void* args) {
     // Open standard Lua libraries
     luaL_openlibs(L);
 
+    // Set up the Lua package.path to include the /assets directory
+    lua_getglobal(L, "package");
+    lua_getfield(L, -1, "path");  // Get current package.path
+    const char *currentPath = lua_tostring(L, -1);
+    lua_pop(L, 1);  // Pop the current path string
+
+    // Append /assets directory to package.path
+    char newPath[1024];
+    snprintf(newPath, sizeof(newPath), "%s;/assets/?.lua", currentPath);
+    lua_pushstring(L, newPath);
+    lua_setfield(L, -2, "path");  // Set package.path to the new path
+
+    lua_pop(L, 1);  // Pop the 'package' table
+
     // Preload LOVE modules
     luaL_requiref(L, "love", luaopen_love, 1);
-    lua_pop(L, 1); // Remove 'love' module from the stack
+    lua_pop(L, 1);  // Remove 'love' module from the stack
 
     // Set up 'arg' table if necessary
     lua_newtable(L);
@@ -77,8 +93,8 @@ void* sdl_thread(void* args) {
     // Pop the LOVE table returned by require
     lua_pop(L, 1);
 
-    // Load the boot script (adjust as needed)
-    const char *bootScript = "require 'love.boot'";
+    // Load the boot script from the /assets directory
+    const char *bootScript = "require 'boot'";  // Now it will load boot.lua from /assets
     if (luaL_dostring(L, bootScript) != LUA_OK) {
         printf("Error running boot script: %s\n", lua_tostring(L, -1));
         lua_close(L);
@@ -88,11 +104,11 @@ void* sdl_thread(void* args) {
     // Create a coroutine for the LOVE game loop
     lua_getglobal(L, "coroutine");
     lua_getfield(L, -1, "create");
-    lua_remove(L, -2); // Remove 'coroutine' table from the stack
+    lua_remove(L, -2);  // Remove 'coroutine' table from the stack
 
     lua_getglobal(L, "love");
     lua_getfield(L, -1, "run");
-    lua_remove(L, -2); // Remove 'love' table from the stack
+    lua_remove(L, -2);  // Remove 'love' table from the stack
 
     if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
         printf("Error creating LOVE coroutine: %s\n", lua_tostring(L, -1));
@@ -105,11 +121,13 @@ void* sdl_thread(void* args) {
     // Main loop
     printf("Entering LOVE main loop...\n");
     SDL_Event event;
-    while (1) {
+    bool running = true;
+    while (running) {
         // Handle SDL events
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_EVENT_QUIT) {
-                goto cleanup;
+                running = false;
+                break;
             } else if (event.type == SDL_EVENT_FINGER_UP) {
                 // Handle touch events if needed
             }
@@ -118,29 +136,24 @@ void* sdl_thread(void* args) {
 
         // Resume LOVE coroutine
         lua_rawgeti(L, LUA_REGISTRYINDEX, loveCoroutineRef);
-        int nresults = 0;
-        int status = lua_resume(L, NULL, 0, &nresults);
+        int status = lua_resume(L, NULL, 0);  // Lua 5.3 signature
         if (status == LUA_OK) {
             // Coroutine finished execution
-            break;
+            running = false;
         } else if (status != LUA_YIELD) {
             // Error occurred
             if (lua_type(L, -1) == LUA_TSTRING) {
                 printf("LOVE error: %s\n", lua_tostring(L, -1));
             }
-            break;
+            running = false;
         }
-        // Continue loop
 
         // Delay to control frame rate
-        vTaskDelay(pdMS_TO_TICKS(16)); // Approximately 60 FPS
+        vTaskDelay(pdMS_TO_TICKS(16));  // Approximately 60 FPS
     }
 
-cleanup:
-    // Clean up Lua state
+    // Cleanup and exit
     lua_close(L);
-
-    // Destroy SDL resources
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
