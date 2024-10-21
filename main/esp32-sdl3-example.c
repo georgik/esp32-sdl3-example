@@ -101,6 +101,18 @@ void* sdl_thread(void* args) {
         return NULL;
     }
 
+    // Check whether run is a function
+    lua_getglobal(L, "love");
+    lua_getfield(L, -1, "run");  // Get love.run
+    if (!lua_isfunction(L, -1)) {
+        printf("Error: love.run is not a function. It is of type %s\n", luaL_typename(L, -1));
+        lua_close(L);
+        return NULL;
+    }
+
+    int type = lua_type(L, -1);
+    printf("love.run type: %s\n", lua_typename(L, type));
+
     // Create a coroutine for the LOVE game loop
     lua_getglobal(L, "coroutine");
     lua_getfield(L, -1, "create");
@@ -136,18 +148,28 @@ void* sdl_thread(void* args) {
 
         // Resume LOVE coroutine
         lua_rawgeti(L, LUA_REGISTRYINDEX, loveCoroutineRef);
-        int status = lua_resume(L, NULL, 0);  // Lua 5.3 signature
+
+        // Push debug.traceback function onto the stack
+        lua_getglobal(L, "debug");
+        lua_getfield(L, -1, "traceback");
+        lua_remove(L, -2);  // Remove 'debug' table from the stack
+
+        // Move the coroutine to be after the traceback function
+        lua_insert(L, -2);
+
+        int status = lua_resume(L, NULL, 0);
         if (status == LUA_OK) {
             // Coroutine finished execution
             running = false;
         } else if (status != LUA_YIELD) {
-            // Error occurred
+            // Error occurred, print the detailed error message with traceback
             if (lua_type(L, -1) == LUA_TSTRING) {
                 printf("LOVE error: %s\n", lua_tostring(L, -1));
+            } else {
+                printf("LOVE error: (unknown type)\n");
             }
             running = false;
         }
-
         // Delay to control frame rate
         vTaskDelay(pdMS_TO_TICKS(16));  // Approximately 60 FPS
     }
