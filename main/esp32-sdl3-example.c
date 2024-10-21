@@ -26,7 +26,7 @@ void* sdl_thread(void* args) {
     printf("Initializing LOVE engine on ESP32\n");
 
     // Initialize SDL if not already initialized
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS) != 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         printf("Unable to initialize SDL: %s\n", SDL_GetError());
         return NULL;
     }
