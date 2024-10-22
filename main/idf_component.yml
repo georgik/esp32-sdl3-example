@@ -12,6 +12,8 @@ dependencies:
 #    git: https://github.com/georgik/esp-idf-component-SDL_ttf.git
   georgik/ogg: "^1.3.5~1"
   georgik/theora: "^1.1.1"
+  georgik/love:
+    git: https://github.com/georgik/esp-idf-component-love.git
 
   ## Required IDF version
   idf:
