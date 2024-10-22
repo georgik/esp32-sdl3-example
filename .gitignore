@@ -1,4 +1,5 @@
 
 sdkconfig
 managed_components/
+build.*/
 
