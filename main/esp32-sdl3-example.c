@@ -122,6 +122,10 @@ void* sdl_thread(void* args) {
     lua_getfield(L, -1, "run");
     lua_remove(L, -2);  // Remove 'love' table from the stack
 
+    // Swap the two elements so that coroutine.create is on top, love.run below
+    lua_insert(L, -2);
+
+    // Now call coroutine.create(love.run)
     if (lua_pcall(L, 1, 1, 0) != LUA_OK) {
         printf("Error creating LOVE coroutine: %s\n", lua_tostring(L, -1));
         lua_close(L);
