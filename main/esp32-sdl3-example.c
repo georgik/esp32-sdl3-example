@@ -46,6 +46,10 @@ void* sdl_thread(void* args) {
         return NULL;
     }
 
+    SDL_SetRenderDrawColor(renderer, 88, 66, 255, 255);
+    SDL_RenderClear(renderer);
+    SDL_RenderPresent(renderer);
+
     SDL_InitFS();
 
     // Initialize Lua state
