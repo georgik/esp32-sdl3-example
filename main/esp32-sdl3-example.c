@@ -181,12 +181,13 @@ void* sdl_thread(void* args) {
         // Delay to control frame rate
         vTaskDelay(pdMS_TO_TICKS(16));  // Approximately 60 FPS
     }
+    printf("Leaving main loop...\n");
 
     // Cleanup and exit
     lua_close(L);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
-    SDL_Quit();
+    // SDL_Quit();
 
     return NULL;
 }
