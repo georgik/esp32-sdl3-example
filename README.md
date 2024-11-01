@@ -1,6 +1,6 @@
 # Example of SDL3 for ESP32
 
-![Test Status](https://github.com/georgik/esp32-sdl3-test/actions/workflows/test.yml/badge.svg)
+![Test Status](https://github.com/georgik/esp32-sdl3-example/actions/workflows/test.yml/badge.svg)
 
 Fork of SDL3 to ESP32 ESP-IDF v5.3+
 
