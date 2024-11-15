@@ -55,6 +55,14 @@ idf.py @boards/esp32_p4_function_ev_board.cfg build
 idf.py @boards/m5stack_core_s3.cfg build
 ```
 
+### Run simulation in VS Code
+
+- Build the project, to get binaries for simulation.
+- Install [Wokwi for VS Code](https://docs.wokwi.com/vscode/getting-started/).
+- Open file `boards/esp32_.../diagram.json`.
+- Click Play button to start simulation.
+- Click Pause button to freeze simulation and display states of GPIOs.
+
 ## Notes
 
 - screen resolution bigger than 320x100 requires enabled PSRAM
