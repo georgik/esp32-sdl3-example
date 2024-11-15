@@ -57,8 +57,6 @@ idf.py @boards/m5stack_core_s3.cfg build
 
 ### Build for ESP32-C6-DevKit or other custom DevKit
 
-![ESP32-C6-DevKit](docs/img/esp32-c6-devkit.webp)
-
 The configuration of this board is based on [ESP-BSP Generic](https://developer.espressif.com/blog/using-esp-bsp-with-devkits/) which allows configuration using menuconfig.
 
 SPI Display configuration:
