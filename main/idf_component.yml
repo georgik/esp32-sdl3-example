@@ -4,7 +4,7 @@ dependencies:
   # espressif/freetype: "^2.13.0~3"
   # espressif/esp-box: "^3.1.0~1"
   joltwallet/littlefs: "==1.14.8"
-  georgik/sdl: "==3.1.7~2"
+  georgik/sdl: "==3.1.7~3"
 #    git: https://github.com/georgik/esp-idf-component-SDL.git
 #  georgik/sdl_image: "^3.0.0~1"
 #    git: https://github.com/georgik/esp-idf-component-SDL_image.git
@@ -13,7 +13,7 @@ dependencies:
 
   ## Required IDF version
   idf:
-    version: ">=5.0.0"
+    version: ">=5.5.0"
 
   # BSP - information reguired for SDL
   espressif/esp-box-3:
