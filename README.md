@@ -2,7 +2,7 @@
 
 ![Test Status](https://github.com/georgik/esp32-sdl3-example/actions/workflows/test.yml/badge.svg)
 
-Fork of SDL3 to ESP32 ESP-IDF v5.3+
+Fork of SDL3 to ESP32 ESP-IDF v5.5+ (master)
 
 ## On-line Demo Simulation
 
